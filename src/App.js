@@ -1,9 +1,30 @@
+import { useState }  from "react";
+
 function App() {
+  const [toDo, setToDo] = useState("");
+  const [toDos, setTodos] = useState([]);
+  
+  const onChange  = (event) => {
+    setToDo(event.target.value);
+  }
+
+  const onSubmit = (event) => {
+    event.preventDefault () ;
+    if (toDo === "") {
+      return;
+    }
+    setTodos(currentArray => [toDo, ...currentArray]);
+    setToDo("");
+    console.log(toDos);
+  }
+
   return (
-    <div className="App">
-      <div>
-        <h1>Welcome back</h1>
-      </div>
+    <div>
+      <h1>My To Dos ({toDos.length})</h1>
+      <form onSubmit={onSubmit}>
+        <input onChange={onChange} value={toDo} type="text" placeholder="Write youre to do..." />
+        <button>Add Todo</button>
+      </form>
     </div>
   );
 }
