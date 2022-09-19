@@ -21,6 +21,11 @@ function App() {
   return (
     <div>
       <h1>My To Dos ({toDos.length})</h1>
+      {
+        toDos.map((toDo, index) => (
+          <h3>{index + 1}. {toDo}</h3>
+        ))
+      }
       <form onSubmit={onSubmit}>
         <input onChange={onChange} value={toDo} type="text" placeholder="Write youre to do..." />
         <button>Add Todo</button>
