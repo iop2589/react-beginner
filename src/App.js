@@ -1,35 +1,43 @@
-import { useState }  from "react";
+import { useEffect, useState }  from "react";
 
 function App() {
-  const [toDo, setToDo] = useState("");
-  const [toDos, setTodos] = useState([]);
-  
-  const onChange  = (event) => {
-    setToDo(event.target.value);
-  }
+  const [loading, setLoading] = useState(true);
+  const [movies, setMovies] = useState([]);
 
-  const onSubmit = (event) => {
-    event.preventDefault () ;
-    if (toDo === "") {
-      return;
+  const getMovies = async() => {
+      const json = await (
+        await fetch (
+          `https://yts.mx/api/v2/list_movies.json?minimum_rating=8.5&sort_by=year`
+        )
+      ).json();
+      setMovies(json.data.movies);
+      setLoading(false);
     }
-    setTodos(currentArray => [toDo, ...currentArray]);
-    setToDo("");
-    console.log(toDos);
-  }
 
+  useEffect(() => {
+      getMovies();
+    }, []);
   return (
     <div>
-      <h1>My To Dos ({toDos.length})</h1>
+      <ul>
       {
-        toDos.map((toDo, index) => (
-          <h3>{index + 1}. {toDo}</h3>
-        ))
+        loading ? <h1>Loading ...</h1> : 
+          movies.map((movie) => 
+            <div key={movie.id}>
+              <img src={movie.medium_cover_image} />
+              <h2>{movie.title}</h2>
+              <p>{movie.summary}</p>
+              <ul>
+                {
+                  movie.genres.map((gen) => (
+                    <li key={gen}>{gen}</li>
+                  ))
+                }
+              </ul>
+            </div>
+          )
       }
-      <form onSubmit={onSubmit}>
-        <input onChange={onChange} value={toDo} type="text" placeholder="Write youre to do..." />
-        <button>Add Todo</button>
-      </form>
+    </ul>
     </div>
   );
 }
