@@ -12,16 +12,14 @@ function Detail () {
         setMovieDetail(json.data.movie);
         console.log(movieDetail);
     }
-    useEffect (() => {
+
+    useEffect(() => {
         getMovie();
-    }, []);
-    console.log(id);
+      }, []);
+
     return (
             <MovieDetail id={movieDetail.id} title={movieDetail.title_long} image={movieDetail.large_cover_image} detailText={movieDetail.description_full} url={movieDetail.url} />
            );
-    
-    
-    // code challenge;
 }
 
 export default Detail;
